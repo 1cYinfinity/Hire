@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hire 1nf1n1ty — Prince Barai · Security Services</title>
+<meta name="description" content="Hire Prince Barai aka 1nf1n1ty — Penetration Testing, VAPT, Bug Bounty, CTF. NASA VDP recognized. Real results, responsible disclosure.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #030308;
+  --bg2:   #08080f;
+  --red:   #ff2d55;
+  --cyan:  #0af5b8;
+  --amber: #ffd60a;
+  --purple: #9d4edd;
+  --txt:   #ececf4;
+  --muted: #52526e;
+  --readable: #a8a8c0;
+  --panel: rgba(255,255,255,0.03);
+  --border: rgba(255,255,255,0.07);
+  --red-glow: 0 0 28px rgba(255,45,85,0.4);
+  --cyan-glow: 0 0 28px rgba(10,245,184,0.4);
+  --amber-glow: 0 0 28px rgba(255,214,10,0.35);
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── GRAIN + SCAN ── */
+#grain {
+  position: fixed; inset: 0; z-index: 800; pointer-events: none; opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+#scan {
+  position: fixed; inset: 0; z-index: 799; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.055) 3px, rgba(0,0,0,0.055) 4px);
+}
+#bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.45; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 700;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 48px;
+  background: rgba(3,3,8,0.88); backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+.nav-inf-icon { width: 44px; height: 22px; flex-shrink: 0; }
+.nav-inf-icon path {
+  fill: none; stroke: var(--cyan); stroke-width: 2.2; stroke-linecap: round;
+  filter: drop-shadow(0 0 6px var(--cyan)); animation: infPulse 3s ease-in-out infinite;
+}
+@keyframes infPulse {
+  0%,100% { stroke: var(--cyan); filter: drop-shadow(0 0 5px var(--cyan)); }
+  50%      { stroke: #fff;        filter: drop-shadow(0 0 14px var(--cyan)); }
+}
+.nav-logo-text { display: flex; flex-direction: column; gap: 1px; }
+.nav-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; letter-spacing: 3px; color: #fff; line-height: 1; }
+.nav-alias { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: var(--cyan); letter-spacing: 2.5px; text-transform: uppercase; }
+.nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1px; background:var(--red); transition:width 0.25s; }
+.nav-links a:hover { color: var(--txt); }
+.nav-links a:hover::after { width:100%; }
+.nav-hire-btn {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 2px;
+  text-transform: uppercase; padding: 9px 20px;
+  background: var(--red); color: #fff; text-decoration: none;
+  clip-path: polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+  transition: all 0.2s; box-shadow: var(--red-glow);
+}
+.nav-hire-btn:hover { background: #ff4567; transform: translateY(-1px); }
+.nav-toggle { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
+.nav-toggle span { display:block; width:22px; height:1.5px; background:var(--txt); border-radius:2px; transition:all 0.3s; }
+.nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.mob-nav {
+  position: fixed; top: 62px; left: 0; right: 0; bottom: 0;
+  background: rgba(3,3,8,0.97); backdrop-filter: blur(24px);
+  z-index: 699; display: none; flex-direction: column;
+  justify-content: center; align-items: center;
+  opacity: 0; transition: opacity 0.3s;
+}
+.mob-nav.open { display: flex; opacity: 1; }
+.mob-nav a {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; letter-spacing: 5px;
+  color: var(--muted); text-decoration: none; padding: 10px 0;
+  transition: color 0.2s; width: 100%; text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.mob-nav a:last-child { border-bottom: none; }
+.mob-nav a:hover { color: var(--red); }
+
+/* ── KEYFRAMES ── */
+@keyframes fadeSlide { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+@keyframes glitchA {
+  0%,95%,100%{opacity:0;transform:translateX(-3px);}
+  96%{opacity:1;transform:translateX(-3px);clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%);}
+  97%{opacity:1;transform:translateX(4px);clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%);}
+  98%{opacity:1;transform:translateX(-2px);clip-path:polygon(0 10%,100% 10%,100% 30%,0 30%);}
+  99%{opacity:0;}
+}
+@keyframes glitchB {
+  0%,93%,100%{opacity:0;transform:translateX(3px);}
+  94%{opacity:1;transform:translateX(3px);clip-path:polygon(0 50%,100% 50%,100% 70%,0 70%);}
+  95%{opacity:1;transform:translateX(-4px);clip-path:polygon(0 15%,100% 15%,100% 35%,0 35%);}
+  96%{opacity:0;}
+}
+@keyframes scanline {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+@keyframes rotate360 { to { transform: rotate(360deg); } }
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+/* ── REVEAL ── */
+.reveal { opacity:0; transform:translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.vis { opacity:1; transform:translateY(0); }
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hire-hero {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 48px 80px;
+  overflow: hidden;
+}
+
+/* Animated scan line across hero */
+.hero-scanline {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, var(--cyan), transparent);
+  opacity: 0.18; z-index: 2; pointer-events: none;
+  animation: scanline 6s linear infinite;
+}
+
+/* Corner brackets */
+.corner { position: absolute; width: 32px; height: 32px; pointer-events: none; z-index: 2; }
+.corner::before,.corner::after { content:''; position:absolute; background: var(--cyan); }
+.corner-tl { top:80px; left:48px; }
+.corner-tl::before { top:0; left:0; width:2px; height:100%; }
+.corner-tl::after  { top:0; left:0; width:100%; height:2px; }
+.corner-tr { top:80px; right:48px; }
+.corner-tr::before { top:0; right:0; width:2px; height:100%; }
+.corner-tr::after  { top:0; right:0; width:100%; height:2px; }
+.corner-bl { bottom:80px; left:48px; }
+.corner-bl::before { bottom:0; left:0; width:2px; height:100%; }
+.corner-bl::after  { bottom:0; left:0; width:100%; height:2px; }
+.corner-br { bottom:80px; right:48px; }
+.corner-br::before { bottom:0; right:0; width:2px; height:100%; }
+.corner-br::after  { bottom:0; right:0; width:100%; height:2px; }
+
+.hero-status {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 3.5px; text-transform: uppercase;
+  padding: 8px 20px; margin-bottom: 36px;
+  border: 1px solid rgba(10,245,184,0.35);
+  background: rgba(10,245,184,0.06);
+  color: var(--cyan);
+  opacity: 0; animation: fadeSlide 0.5s 0.1s forwards;
+  position: relative;
+}
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--cyan); box-shadow: 0 0 10px var(--cyan);
+  animation: blink 1.2s infinite;
+}
+/* Pulse rings behind status dot */
+.status-dot::before,.status-dot::after {
+  content:''; position:absolute; left:-2px; top:-2px;
+  width:11px; height:11px; border-radius:50%;
+  border: 1px solid var(--cyan); animation: pulse-ring 2s infinite;
+}
+.status-dot::after { animation-delay: 0.5s; }
+
+.hero-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.8rem, 10vw, 9.5rem);
+  line-height: 0.88; letter-spacing: 5px; color: #fff;
+  margin-bottom: 0;
+  opacity: 0; animation: fadeSlide 0.55s 0.25s forwards;
+}
+.hero-h1 .glitch { position: relative; display: inline-block; }
+.hero-h1 .glitch::before,.hero-h1 .glitch::after { content: attr(data-text); position:absolute; top:0; left:0; width:100%; pointer-events:none; }
+.hero-h1 .glitch::before { color:var(--red); clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%); transform:translateX(-3px); animation:glitchA 5s 1.5s infinite; }
+.hero-h1 .glitch::after  { color:var(--cyan); clip-path:polygon(0 60%,100% 60%,100% 75%,0 75%); transform:translateX(3px);  animation:glitchB 5s 2s infinite; }
+
+.hero-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: clamp(0.85rem, 2vw, 1.1rem); letter-spacing: 5px;
+  color: var(--red); text-transform: uppercase; margin-top: 12px; margin-bottom: 32px;
+  opacity: 0; animation: fadeSlide 0.5s 0.4s forwards;
+}
+
+.hero-desc {
+  font-size: 1.05rem; color: var(--readable); line-height: 1.8;
+  max-width: 640px; margin: 0 auto 48px; font-weight: 300;
+  opacity: 0; animation: fadeSlide 0.5s 0.55s forwards;
+}
+.hero-desc strong { color: #fff; font-weight: 600; }
+
+.hero-ctas {
+  display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+  opacity: 0; animation: fadeSlide 0.5s 0.7s forwards;
+}
+.cta-primary {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem; letter-spacing: 2.5px;
+  text-transform: uppercase; padding: 16px 36px;
+  background: var(--red); color: #fff; border: none; text-decoration: none;
+  transition: all 0.25s; box-shadow: var(--red-glow); cursor: pointer;
+  clip-path: polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+}
+.cta-primary:hover { background: #ff4567; box-shadow: 0 0 55px rgba(255,45,85,0.6); transform: translateY(-2px); }
+.cta-secondary {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem; letter-spacing: 2.5px;
+  text-transform: uppercase; padding: 16px 36px;
+  background: transparent; color: var(--cyan); border: 1px solid rgba(10,245,184,0.4);
+  text-decoration: none; transition: all 0.25s;
+  clip-path: polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+}
+.cta-secondary:hover { border-color: var(--cyan); box-shadow: var(--cyan-glow); background: rgba(10,245,184,0.06); transform: translateY(-2px); }
+
+/* Proof bar */
+.proof-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 0;
+  border-top: 1px solid var(--border); z-index: 2;
+  opacity: 0; animation: fadeSlide 0.6s 1s forwards;
+}
+.proof-item {
+  padding: 18px 36px; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.proof-item:last-child { border-right: none; }
+.proof-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px; color: var(--cyan); display: block; line-height: 1; }
+.proof-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 4px; }
+
+/* ═══════════════════════════════════════════
+   SECTION BASE
+═══════════════════════════════════════════ */
+.sec { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 96px 48px; }
+.sec-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--red);
+  letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 12px;
+}
+.sec-label::before { content:''; flex:none; width:24px; height:1px; background:var(--red); }
+.sec-h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.4rem, 5vw, 4rem); letter-spacing: 3px; color: #fff; line-height: 1; margin-bottom: 60px; }
+.sec-h2 em { font-style: normal; color: var(--cyan); text-shadow: 0 0 24px rgba(10,245,184,0.4); }
+.sec-divider { height: 1px; background: var(--border); margin: 0 48px; position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════ */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.svc-card {
+  background: var(--bg2);
+  padding: 40px 36px;
+  position: relative; overflow: hidden;
+  transition: all 0.35s;
+  cursor: default;
+}
+.svc-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(to right, var(--svc-color, var(--red)), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.svc-card:hover { background: rgba(255,255,255,0.05); transform: translateY(-3px); }
+.svc-card:hover::before { transform: scaleX(1); }
+
+/* glow blob */
+.svc-card::after {
+  content:''; position:absolute; width:200px; height:200px; border-radius:50%;
+  background: radial-gradient(circle, var(--svc-color, var(--red)), transparent 70%);
+  opacity: 0; right:-60px; bottom:-60px;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.svc-card:hover::after { opacity: 0.06; }
+
+.svc-icon {
+  font-size: 2.2rem; margin-bottom: 20px; display: block;
+  animation: float 4s ease-in-out infinite;
+}
+.svc-card:nth-child(2) .svc-icon { animation-delay: 0.5s; }
+.svc-card:nth-child(3) .svc-icon { animation-delay: 1s; }
+.svc-card:nth-child(4) .svc-icon { animation-delay: 1.5s; }
+.svc-card:nth-child(5) .svc-icon { animation-delay: 2s; }
+.svc-card:nth-child(6) .svc-icon { animation-delay: 2.5s; }
+
+.svc-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.35rem; font-weight: 700; letter-spacing: 1px;
+  color: #fff; margin-bottom: 6px;
+}
+.svc-code {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+  color: var(--svc-color, var(--red)); letter-spacing: 2.5px;
+  text-transform: uppercase; margin-bottom: 18px;
+}
+.svc-desc {
+  font-size: 0.9rem; color: var(--readable); line-height: 1.75;
+  font-weight: 300; margin-bottom: 24px;
+}
+.svc-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.svc-features li {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem;
+  color: #9898b0; padding-left: 16px; position: relative; letter-spacing: 0.3px;
+}
+.svc-features li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: var(--svc-color, var(--red)); font-size: 0.6rem;
+}
+
+/* ═══════════════════════════════════════════
+   WHY ME — PROOF CARDS
+═══════════════════════════════════════════ */
+.proof-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.proof-card {
+  background: var(--panel); border: 1px solid var(--border);
+  padding: 32px 28px; position: relative; overflow: hidden;
+  transition: all 0.3s;
+  clip-path: polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+}
+.proof-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background: linear-gradient(to right, var(--red), var(--cyan)); }
+.proof-card:hover { background: rgba(255,255,255,0.05); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.proof-card-ico { font-size: 1.6rem; margin-bottom: 14px; }
+.proof-card-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 2px;
+  color: var(--red); line-height: 1; text-shadow: 0 0 20px rgba(255,45,85,0.4);
+  margin-bottom: 8px;
+}
+.proof-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.proof-card-desc { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: #9898b0; line-height: 1.65; }
+
+/* ═══════════════════════════════════════════
+   METHODOLOGY / PROCESS
+═══════════════════════════════════════════ */
+.process-wrap { position: relative; }
+.process-line {
+  position: absolute; left: 32px; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(to bottom, var(--red), var(--cyan));
+  opacity: 0.3;
+}
+.process-steps { display: flex; flex-direction: column; gap: 0; }
+.process-step {
+  display: grid; grid-template-columns: 64px 1fr;
+  gap: 0 32px; padding: 36px 0;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.process-step:last-child { border-bottom: none; }
+.process-step:hover .step-content { transform: translateX(6px); }
+.step-num-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.step-num {
+  width: 64px; height: 64px; border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem;
+  color: var(--red); letter-spacing: 1px;
+  position: relative; z-index: 1; flex-shrink: 0;
+  transition: all 0.3s;
+}
+.process-step:hover .step-num { border-color: var(--red); box-shadow: 0 0 20px rgba(255,45,85,0.25); }
+.step-content { transition: transform 0.3s; }
+.step-tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem;
+  color: var(--cyan); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px;
+}
+.step-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 10px; letter-spacing: 0.5px; }
+.step-desc { font-size: 0.9rem; color: var(--readable); line-height: 1.75; font-weight: 300; }
+.step-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.step-tool {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+  padding: 3px 10px; border: 1px solid rgba(255,255,255,0.1);
+  color: #888; background: rgba(255,255,255,0.025); letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+.step-tool:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ═══════════════════════════════════════════
+   SKILL BARS
+═══════════════════════════════════════════ */
+.skills-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 64px; }
+.skill-group-title {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem;
+  color: var(--red); letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 24px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.skill-row { margin-bottom: 20px; }
+.skill-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.skill-name { font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 600; color: #ddd; letter-spacing: 0.5px; }
+.skill-pct { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--cyan); }
+.skill-bar { height: 3px; background: rgba(255,255,255,0.07); position: relative; overflow: hidden; }
+.skill-fill {
+  height: 100%; width: 0%; position: relative;
+  transition: width 1.4s cubic-bezier(.4,0,.2,1);
+  background: linear-gradient(to right, var(--red), var(--cyan));
+}
+.skill-fill::after {
+  content:''; position:absolute; right:0; top:-3px; width:7px; height:9px;
+  background: var(--cyan); border-radius: 1px;
+  box-shadow: 0 0 8px var(--cyan);
+}
+.skill-bar.animating .skill-fill { width: var(--target-width); }
+
+/* ═══════════════════════════════════════════
+   TERMINAL BLOCK
+═══════════════════════════════════════════ */
+.terminal {
+  background: #020208; border: 1px solid var(--border);
+  border-top: 2px solid var(--red);
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem;
+  line-height: 1.9; overflow: hidden;
+}
+.term-header {
+  padding: 10px 18px; background: rgba(0,0,0,0.5);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.term-dot { width: 10px; height: 10px; border-radius: 50%; }
+.term-dot.r { background: #ff5f57; }
+.term-dot.y { background: #ffbd2e; }
+.term-dot.g { background: #28c840; }
+.term-title { font-size: 0.58rem; color: var(--muted); letter-spacing: 2px; margin-left: auto; text-transform: uppercase; }
+.term-body { padding: 28px 28px; }
+.term-line { display: block; margin-bottom: 3px; }
+.t-prompt { color: var(--cyan); }
+.t-cmd    { color: #fff; }
+.t-out    { color: #9898b0; padding-left: 20px; }
+.t-green  { color: #28c840; }
+.t-red    { color: var(--red); }
+.t-amber  { color: var(--amber); }
+.t-cursor { display: inline-block; width: 8px; height: 14px; background: var(--cyan); animation: blink 0.9s infinite; vertical-align: middle; margin-left: 2px; }
+
+/* ═══════════════════════════════════════════
+   ENGAGEMENT TIERS
+═══════════════════════════════════════════ */
+.tiers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.tier-card {
+  background: var(--panel); border: 1px solid var(--border);
+  padding: 40px 32px; position: relative; overflow: hidden;
+  transition: all 0.35s; text-align: center;
+}
+.tier-card.featured {
+  border-color: rgba(255,45,85,0.4);
+  background: rgba(255,45,85,0.04);
+}
+.tier-card.featured::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,45,85,0.08), transparent 65%);
+  pointer-events:none;
+}
+.tier-card:hover { transform: translateY(-5px); box-shadow: 0 24px 80px rgba(0,0,0,0.5); }
+.tier-badge {
+  position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 2px;
+  text-transform: uppercase; padding: 4px 14px;
+  background: var(--red); color: #fff;
+}
+.tier-icon { font-size: 2rem; margin-bottom: 16px; display: block; }
+.tier-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; letter-spacing: 3px;
+  color: #fff; margin-bottom: 8px;
+}
+.tier-type {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem;
+  color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px;
+}
+.tier-features { list-style: none; text-align: left; margin-bottom: 32px; display: flex; flex-direction: column; gap: 10px; }
+.tier-features li {
+  font-size: 0.88rem; color: var(--readable); padding-left: 20px;
+  position: relative; font-weight: 300; line-height: 1.5;
+}
+.tier-features li::before {
+  content: '✓'; position: absolute; left: 0;
+  color: var(--cyan); font-size: 0.75rem; font-weight: 700;
+}
+.tier-features li.na { color: var(--muted); }
+.tier-features li.na::before { content: '–'; color: var(--muted); }
+.tier-cta {
+  display: block; text-align: center;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 2px;
+  text-transform: uppercase; padding: 12px 24px;
+  border: 1px solid rgba(255,255,255,0.15); color: var(--muted);
+  text-decoration: none; transition: all 0.25s;
+  clip-path: polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+}
+.tier-cta:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(10,245,184,0.05); }
+.tier-card.featured .tier-cta { background: var(--red); color: #fff; border-color: var(--red); box-shadow: var(--red-glow); }
+.tier-card.featured .tier-cta:hover { background: #ff4567; box-shadow: 0 0 50px rgba(255,45,85,0.5); }
+
+/* ═══════════════════════════════════════════
+   CTA SECTION
+═══════════════════════════════════════════ */
+.final-cta {
+  text-align: center; position: relative; overflow: hidden;
+  background: rgba(255,45,85,0.03); border: 1px solid rgba(255,45,85,0.15);
+  padding: 80px 48px;
+  clip-path: polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,28px 100%,0 calc(100% - 28px));
+}
+.final-cta::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,45,85,0.07), transparent 65%);
+  pointer-events:none;
+}
+.final-h2 {
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: 5px; color: #fff; margin-bottom: 16px; position: relative;
+}
+.final-h2 span { color: var(--red); }
+.final-sub {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+  color: var(--muted); letter-spacing: 2px; margin-bottom: 48px; position: relative;
+}
+.final-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; position: relative; }
+.f-link {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 1.5px;
+  padding: 13px 22px; border: 1px solid var(--border); color: var(--muted);
+  text-decoration: none; display: flex; align-items: center; gap: 9px;
+  transition: all 0.25s;
+  clip-path: polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+}
+.f-link svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+.f-link:hover { border-color: var(--red); color: var(--red); background: rgba(255,45,85,0.05); transform: translateY(-2px); }
+.f-link.primary { background: var(--red); border-color: var(--red); color: #fff; box-shadow: var(--red-glow); }
+.f-link.primary:hover { background: #ff4567; border-color: #ff4567; box-shadow: 0 0 55px rgba(255,45,85,0.6); }
+.f-link.gh:hover  { border-color: var(--cyan); color: var(--cyan); background: rgba(10,245,184,0.04); }
+.f-link.li:hover  { border-color: #0af; color: #0af; background: rgba(0,170,255,0.04); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border); padding: 24px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px; position: relative; z-index: 1;
+}
+.ft-left { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 1.5px; }
+.ft-left strong { color: var(--red); }
+.ft-left .ft-al { color: var(--cyan); }
+.ft-right { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: var(--muted); letter-spacing: 1px; }
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .hire-hero { padding: 100px 24px 80px; }
+  .corner-tl,.corner-bl { left: 20px; }
+  .corner-tr,.corner-br { right: 20px; }
+  .sec { padding: 72px 24px; }
+  .sec-divider { margin: 0 24px; }
+  .skills-wrap { grid-template-columns: 1fr; gap: 32px; }
+  .tiers-grid { grid-template-columns: 1fr; }
+  .proof-bar { position: static; flex-wrap: wrap; border-top: 1px solid var(--border); }
+  .proof-item { flex: 1 1 50%; border-right: none; border-bottom: 1px solid var(--border); }
+  .services-grid { grid-template-columns: 1fr; }
+  .final-cta { padding: 56px 24px; }
+  footer { padding: 20px 24px; flex-direction: column; text-align: center; }
+}
+@media (max-width: 600px) {
+  .hero-h1 { font-size: 3.4rem; }
+  .hero-ctas { flex-direction: column; align-items: stretch; }
+  .cta-primary,.cta-secondary { text-align: center; }
+  .process-step { grid-template-columns: 48px 1fr; gap: 0 20px; }
+  .step-num { width: 48px; height: 48px; font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="grain"></div>
+<div id="scan"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="./1nf1n1ty-portfolio-v3.html" class="nav-logo">
+    <svg class="nav-inf-icon" viewBox="0 0 44 22">
+      <path d="M22,11 C22,11 17.5,4 11,4 C5,4 1,7 1,11 C1,15 5,18 11,18 C17.5,18 22,11 22,11 C22,11 26.5,4 33,4 C39,4 43,7 43,11 C43,15 39,18 33,18 C26.5,18 22,11 22,11 Z"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-name">Prince Barai</span>
+      <span class="nav-alias">aka 1nf1n1ty</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why-me">Why Me</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#engage">Engage</a></li>
+    <li><a href="./1nf1n1ty-portfolio-v3.html">← Portfolio</a></li>
+    <li><a href="#contact" class="nav-hire-btn">Hire Me</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mob-nav" id="mobNav">
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#why-me" onclick="closeMob()">Why Me</a>
+  <a href="#process" onclick="closeMob()">Process</a>
+  <a href="#skills" onclick="closeMob()">Skills</a>
+  <a href="#engage" onclick="closeMob()">Engage</a>
+  <a href="#contact" onclick="closeMob()">Hire Me</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section class="hire-hero">
+  <div class="hero-scanline"></div>
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <div class="hero-status">
+    <span class="status-dot"></span>
+    Available for Hire &nbsp;·&nbsp; Open to Engagements
+  </div>
+
+  <h1 class="hero-h1">
+    <span class="glitch" data-text="HIRE">HIRE</span><br>
+    <span class="glitch" data-text="1NF1N1TY">1NF1N1TY</span>
+  </h1>
+
+  <p class="hero-sub">// Pentest · VAPT · Bug Bounty · CTF · Security Research</p>
+
+  <p class="hero-desc">
+    You don't just need a scanner. You need someone who <strong>thinks like an attacker</strong>.<br>
+    Real-world vulns found. NASA VDP recognized. Top 1.5% globally in CTF. 3+ years of active bug bounty. <strong>Your systems, tested by someone who actually hunts.</strong>
+  </p>
+
+  <div class="hero-ctas">
+    <a href="#contact" class="cta-primary">Start a Project</a>
+    <a href="#services" class="cta-secondary">View Services</a>
+  </div>
+
+  <div class="proof-bar">
+    <div class="proof-item">
+      <span class="proof-val">NASA</span>
+      <span class="proof-lbl">VDP Recognized</span>
+    </div>
+    <div class="proof-item">
+      <span class="proof-val">#4</span>
+      <span class="proof-lbl">HackZero'26 CTF</span>
+    </div>
+    <div class="proof-item">
+      <span class="proof-val">#22</span>
+      <span class="proof-lbl">BlackHat Global</span>
+    </div>
+    <div class="proof-item">
+      <span class="proof-val">Top 4%</span>
+      <span class="proof-lbl">TryHackMe World</span>
+    </div>
+    <div class="proof-item">
+      <span class="proof-val">3+</span>
+      <span class="proof-lbl">Years Hunting</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SERVICES
+═══════════════════════════════════════════ -->
+<div class="sec-divider"></div>
+<section class="sec" id="services">
+  <p class="sec-label">What I Do</p>
+  <h2 class="sec-h2">Security <em>Services</em></h2>
+  <div class="services-grid reveal">
+
+    <div class="svc-card" style="--svc-color: var(--red)">
+      <span class="svc-icon">🎯</span>
+      <div class="svc-title">Penetration Testing</div>
+      <div class="svc-code">// PENTEST · OFFENSIVE</div>
+      <p class="svc-desc">Full-scope offensive security assessments simulating real-world attackers. I go beyond automated scans — manual exploitation, chained attack paths, and a full report you can actually act on.</p>
+      <ul class="svc-features">
+        <li>Web application penetration testing</li>
+        <li>Network & infrastructure pentest</li>
+        <li>API security assessment</li>
+        <li>Authentication & session testing</li>
+        <li>Privilege escalation scenarios</li>
+        <li>Detailed PoC + remediation report</li>
+      </ul>
+    </div>
+
+    <div class="svc-card" style="--svc-color: var(--cyan)">
+      <span class="svc-icon">🔬</span>
+      <div class="svc-title">VAPT</div>
+      <div class="svc-code">// VULNERABILITY ASSESSMENT & PENTEST</div>
+      <p class="svc-desc">Systematic vulnerability discovery combined with active exploitation to give you a complete risk picture — not just a list of CVEs, but what they actually mean for your system.</p>
+      <ul class="svc-features">
+        <li>Automated + manual vulnerability scanning</li>
+        <li>Risk-ranked findings (CVSS scored)</li>
+        <li>Exploitation validation of critical vulns</li>
+        <li>OWASP Top 10 full coverage</li>
+        <li>Compliance-ready report output</li>
+        <li>Re-test after remediation</li>
+      </ul>
+    </div>
+
+    <div class="svc-card" style="--svc-color: var(--amber)">
+      <span class="svc-icon">🐛</span>
+      <div class="svc-title">Bug Bounty Hunting</div>
+      <div class="svc-code">// RESPONSIBLE DISCLOSURE · PRIVATE PROGRAMS</div>
+      <p class="svc-desc">Continuous security research on your platform — finding the bugs your automated tools miss. Responsible, coordinated disclosure. NASA VDP recognized. Active on Bugcrowd, HackerOne, Intigriti.</p>
+      <ul class="svc-features">
+        <li>XSS, SQLi, IDOR, auth bypass discovery</li>
+        <li>SSRF, XXE, business logic flaws</li>
+        <li>Subdomain takeover detection</li>
+        <li>Custom recon automation (my tooling)</li>
+        <li>Coordinated responsible disclosure</li>
+        <li>Structured, reproducible reports</li>
+      </ul>
+    </div>
+
+    <div class="svc-card" style="--svc-color: var(--purple)">
+      <span class="svc-icon">🚩</span>
+      <div class="svc-title">CTF Consulting & Training</div>
+      <div class="svc-code">// CTF · TEAM COACHING · TRAINING</div>
+      <p class="svc-desc">Ranked top 1.5% globally (NahamCon), 4th at HackZero'26, 22nd at BlackHat. I can coach your team, build CTF challenges, or help you prepare for security competitions.</p>
+      <ul class="svc-features">
+        <li>Web exploitation training</li>
+        <li>Reverse engineering fundamentals</li>
+        <li>CTF team strategy & workflow</li>
+        <li>Custom challenge design</li>
+        <li>1-on-1 or group sessions</li>
+        <li>Write-up review & mentorship</li>
+      </ul>
+    </div>
+
+    <div class="svc-card" style="--svc-color: var(--cyan)">
+      <span class="svc-icon">🔎</span>
+      <div class="svc-title">Recon & OSINT</div>
+      <div class="svc-code">// INTELLIGENCE · ATTACK SURFACE MAPPING</div>
+      <p class="svc-desc">Deep attack surface mapping using my custom-built recon framework — subdomain enum, takeover detection, endpoint discovery, parameter fuzzing, and more. Know your exposure before attackers do.</p>
+      <ul class="svc-features">
+        <li>Subdomain enumeration & verification</li>
+        <li>Subdomain takeover detection</li>
+        <li>Hidden endpoint & admin panel discovery</li>
+        <li>URL parameter identification</li>
+        <li>WHOIS & passive intelligence</li>
+        <li>Full attack surface report</li>
+      </ul>
+    </div>
+
+    <div class="svc-card" style="--svc-color: var(--red)">
+      <span class="svc-icon">🛡️</span>
+      <div class="svc-title">Security Workshops</div>
+      <div class="svc-code">// AWARENESS · EDUCATION · UPSKILLING</div>
+      <p class="svc-desc">Practical, hands-on cybersecurity workshops for teams, students, and organizations. Delivered live sessions to 100+ students. Google & Microsoft ambassador experience in tech education.</p>
+      <ul class="svc-features">
+        <li>Developer security awareness</li>
+        <li>Secure coding practices</li>
+        <li>OWASP Top 10 walkthroughs</li>
+        <li>Hands-on CTF-style labs</li>
+        <li>Bug bounty methodology intro</li>
+        <li>Red team thinking & mindset</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     WHY ME
+═══════════════════════════════════════════ -->
+<div class="sec-divider"></div>
+<section class="sec" id="why-me">
+  <p class="sec-label">Proof of Work</p>
+  <h2 class="sec-h2">Why <em>1nf1n1ty</em></h2>
+  <div class="proof-grid reveal">
+
+    <div class="proof-card">
+      <div class="proof-card-ico">🚀</div>
+      <div class="proof-card-num">NASA</div>
+      <div class="proof-card-title">VDP Letter of Appreciation</div>
+      <div class="proof-card-desc">Responsibly disclosed a critical vulnerability in NASA's public-facing infrastructure. One of few student researchers globally recognised by NASA's Vulnerability Disclosure Program.</div>
+    </div>
+
+    <div class="proof-card">
+      <div class="proof-card-ico">🏆</div>
+      <div class="proof-card-num">#4</div>
+      <div class="proof-card-title">HackZero'26 CTF — 8,800 pts</div>
+      <div class="proof-card-desc">4th place globally. Back-to-back top-10 CTF finishes — HackZero'26 and KashiCTF — demonstrating consistent, high-performance offensive security under competition pressure.</div>
+    </div>
+
+    <div class="proof-card">
+      <div class="proof-card-ico">🌍</div>
+      <div class="proof-card-num">#22</div>
+      <div class="proof-card-title">Bugcrowd BlackHat USA CTF</div>
+      <div class="proof-card-desc">Ranked 22nd globally at one of the premier industry cybersecurity competitions. Advanced offensive skills validated at the highest level of the industry.</div>
+    </div>
+
+    <div class="proof-card">
+      <div class="proof-card-ico">🎯</div>
+      <div class="proof-card-num">#42</div>
+      <div class="proof-card-title">NahamCon 2025 — Top 1.5%</div>
+      <div class="proof-card-desc">42nd out of 2,930 teams. 8,127 points. 75% of all challenges solved. Top 1.5% globally against thousands of security professionals and researchers worldwide.</div>
+    </div>
+
+    <div class="proof-card">
+      <div class="proof-card-ico">🛠️</div>
+      <div class="proof-card-num">4+</div>
+      <div class="proof-card-title">Public Security Tools</div>
+      <div class="proof-card-desc">Built and open-sourced real security tooling — Recon framework (forked by other researchers), Reverse Shell Generator (13 languages), and published exploit chains for HTB machines.</div>
+    </div>
+
+    <div class="proof-card">
+      <div class="proof-card-ico">💻</div>
+      <div class="proof-card-num">Top 4%</div>
+      <div class="proof-card-title">TryHackMe Global</div>
+      <div class="proof-card-desc">Consistently ranked in the top 4% of all TryHackMe users worldwide. Active on Hack The Box, PortSwigger Academy, Bugcrowd, HackerOne, and Intigriti.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TERMINAL BLOCK
+═══════════════════════════════════════════ -->
+<div class="sec-divider"></div>
+<section class="sec">
+  <div class="terminal reveal">
+    <div class="term-header">
+      <span class="term-dot r"></span>
+      <span class="term-dot y"></span>
+      <span class="term-dot g"></span>
+      <span class="term-title">1nf1n1ty@kali ~ recon-session</span>
+    </div>
+    <div class="term-body">
+      <span class="term-line"><span class="t-prompt">1nf1n1ty@kali</span><span class="t-cmd"> ~ $ ./recon.sh --target client.example.com</span></span>
+      <span class="term-line"><span class="t-out t-green">[+] Subdomain enumeration started...</span></span>
+      <span class="term-line"><span class="t-out t-green">[+] Found 47 subdomains — 12 active, 3 potentially vulnerable</span></span>
+      <span class="term-line"><span class="t-out t-amber">[!] Subdomain takeover detected: staging.client.example.com → dangling CNAME</span></span>
+      <span class="term-line"><span class="t-out t-green">[+] Hidden admin panel discovered: /admin/legacy — HTTP 200</span></span>
+      <span class="term-line"><span class="t-out t-red">[CRITICAL] XSS in search parameter: ?q= — payload reflected unsanitized</span></span>
+      <span class="term-line"><span class="t-out t-red">[CRITICAL] IDOR in /api/user/{id} — no authorization check</span></span>
+      <span class="term-line"><span class="t-out">[+] Generating structured report...</span></span>
+      <span class="term-line"><span class="t-out t-green">[✓] Report saved: findings_2026-04-08.md — 6 vulns | 2 CRITICAL | 3 HIGH | 1 MEDIUM</span></span>
+      <span class="term-line">&nbsp;</span>
+      <span class="term-line"><span class="t-prompt">1nf1n1ty@kali</span><span class="t-cmd"> ~ $ _</span><span class="t-cursor"></span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     METHODOLOGY / PROCESS
+═══════════════════════════════════════════ -->
+<div class="sec-divider"></div>
+<section class="sec" id="process">
+  <p class="sec-label">How I Work</p>
+  <h2 class="sec-h2">Attack <em>Methodology</em></h2>
+  <div class="process-wrap reveal">
+    <div class="process-line"></div>
+    <div class="process-steps">
+
+      <div class="process-step">
+        <div class="step-num-wrap">
+          <div class="step-num">01</div>
+        </div>
+        <div class="step-content">
+          <div class="step-tag">// Phase One</div>
+          <div class="step-title">Reconnaissance & Surface Mapping</div>
+          <div class="step-desc">Every engagement starts with intelligence. I map your entire attack surface — subdomains, endpoints, parameters, technologies, exposed services, and passive OSINT — before touching a single request. My custom Recon framework aggregates multiple sources into one pipeline.</div>
+          <div class="step-tools">
+            <span class="step-tool">Recon Framework</span>
+            <span class="step-tool">Subfinder</span>
+            <span class="step-tool">Amass</span>
+            <span class="step-tool">WHOIS</span>
+            <span class="step-tool">Shodan</span>
+            <span class="step-tool">Waybackurls</span>
+            <span class="step-tool">GAU</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num-wrap">
+          <div class="step-num">02</div>
+        </div>
+        <div class="step-content">
+          <div class="step-tag">// Phase Two</div>
+          <div class="step-title">Vulnerability Discovery</div>
+          <div class="step-desc">Automated scanning gives you coverage. Manual testing gives you depth. I combine both — running targeted scans, then manually probing authentication flows, authorization logic, input handling, and business logic for what scanners always miss.</div>
+          <div class="step-tools">
+            <span class="step-tool">Burp Suite Pro</span>
+            <span class="step-tool">Nmap</span>
+            <span class="step-tool">Nikto</span>
+            <span class="step-tool">FFUF</span>
+            <span class="step-tool">Nuclei</span>
+            <span class="step-tool">SQLmap</span>
+            <span class="step-tool">Custom Scripts</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num-wrap">
+          <div class="step-num">03</div>
+        </div>
+        <div class="step-content">
+          <div class="step-tag">// Phase Three</div>
+          <div class="step-title">Exploitation & Chain Analysis</div>
+          <div class="step-desc">A vulnerability in isolation tells you one thing. A vulnerability chained with three others tells you what a real attacker would actually do. I build exploit chains, validate impact, and determine true business risk — not just CVSS scores.</div>
+          <div class="step-tools">
+            <span class="step-tool">Metasploit</span>
+            <span class="step-tool">Custom Exploits</span>
+            <span class="step-tool">PoC Development</span>
+            <span class="step-tool">Privilege Escalation</span>
+            <span class="step-tool">Lateral Movement</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num-wrap">
+          <div class="step-num">04</div>
+        </div>
+        <div class="step-content">
+          <div class="step-tag">// Phase Four</div>
+          <div class="step-title">Reporting & Remediation</div>
+          <div class="step-desc">Every finding comes with a detailed write-up: clear description, reproduction steps, impact assessment, CVSS score, and concrete remediation recommendations. Reports are written for both technical teams and management — no jargon overload.</div>
+          <div class="step-tools">
+            <span class="step-tool">CVSS Scoring</span>
+            <span class="step-tool">PoC Screenshots</span>
+            <span class="step-tool">Remediation Steps</span>
+            <span class="step-tool">Executive Summary</span>
+            <span class="step-tool">OWASP Mapping</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num-wrap">
+          <div class="step-num">05</div>
+        </div>
+        <div class="step-content">
+          <div class="step-tag">// Phase Five</div>
+          <div class="step-title">Re-Test & Sign-Off</div>
+          <div class="step-desc">After you remediate, I verify. Re-testing ensures patches actually work and didn't introduce new issues. You get a clean sign-off confirming identified vulnerabilities are resolved — giving your team and stakeholders confidence.</div>
+          <div class="step-tools">
+            <span class="step-tool">Patch Verification</span>
+            <span class="step-tool">Regression Testing</span>
+            <span class="step-tool">Sign-off Report</span>
+            <span class="step-tool">Follow-up Consult</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SKILL BARS
+═══════════════════════════════════════════ -->
+<div class="sec-divider"></div>
+<section class="sec" id="skills">
+  <p class="sec-label">Proficiency</p>
+  <h2 class="sec-h2">Technical <em>Depth</em></h2>
+  <div class="skills-wrap reveal" id="skillsWrap">
+
+    <div>
+      <div class="skill-group-title">// Offensive Security</div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Web App Pentesting</span><span class="skill-pct">92%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:92%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Bug Bounty Hunting</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:90%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">VAPT</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:85%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Privilege Escalation</span><span class="skill-pct">82%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:82%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">CTF Competition</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:88%"></div></div></div>
+    </div>
+
+    <div>
+      <div class="skill-group-title">// Recon & OSINT</div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Subdomain Enumeration</span><span class="skill-pct">95%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:95%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">OSINT & Intelligence</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:88%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Attack Surface Mapping</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:90%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Custom Automation</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:85%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Exploit Development</span><span class="skill-pct">78%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:78%"></div></div></div>
+    </div>
+
+    <div>
+      <div class="skill-group-title">// Vulnerability Classes</div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">XSS (all variants)</span><span class="skill-pct">93%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:93%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">SQL Injection</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:88%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Auth & Session Flaws</span><span class="skill-pct">87%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:87%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">IDOR & Access Control</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:85%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Subdomain Takeover</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:90%"></div></div></div>
+    </div>
+
+    <div>
+      <div class="skill-group-title">// Tools & Languages</div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Burp Suite</span><span class="skill-pct">92%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:92%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Python / Scripting</span><span class="skill-pct">87%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:87%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Bash / Shell</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:90%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">Nmap / Metasploit</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:85%"></div></div></div>
+      <div class="skill-row"><div class="skill-meta"><span class="skill-name">C / C++</span><span class="skill-pct">72%</span></div><div class="skill-bar"><div class="skill-fill" style="--target-width:72%"></div></div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ENGAGEMENT TIERS
+═══════════════════════════════════════════ -->
+<div class="sec-divider"></div>
+<section class="sec" id="engage">
+  <p class="sec-label">Engagement Models</p>
+  <h2 class="sec-h2">How to <em>Engage</em></h2>
+  <div class="tiers-grid reveal">
+
+    <div class="tier-card">
+      <span class="tier-icon">🔍</span>
+      <div class="tier-name">Recon</div>
+      <div class="tier-type">Surface Assessment</div>
+      <ul class="tier-features">
+        <li>Full attack surface mapping</li>
+        <li>Subdomain enumeration</li>
+        <li>Takeover detection</li>
+        <li>Hidden endpoint discovery</li>
+        <li>Passive vulnerability signals</li>
+        <li>Structured findings report</li>
+        <li class="na">No active exploitation</li>
+        <li class="na">No re-test included</li>
+      </ul>
+      <a href="mailto:baraiprince.cs@gmail.com?subject=Recon Engagement" class="tier-cta">Get in Touch</a>
+    </div>
+
+    <div class="tier-card featured">
+      <span class="tier-badge">Most Requested</span>
+      <span class="tier-icon">🎯</span>
+      <div class="tier-name">Full Pentest</div>
+      <div class="tier-type">End-to-End Assessment</div>
+      <ul class="tier-features">
+        <li>Full recon + attack surface map</li>
+        <li>Manual web / API pentest</li>
+        <li>Authentication & session testing</li>
+        <li>Exploit chain development</li>
+        <li>CVSS-scored findings report</li>
+        <li>PoC for all critical issues</li>
+        <li>Remediation recommendations</li>
+        <li>1× Re-test after patching</li>
+      </ul>
+      <a href="mailto:baraiprince.cs@gmail.com?subject=Full Pentest Engagement" class="tier-cta">Start This Engagement</a>
+    </div>
+
+    <div class="tier-card">
+      <span class="tier-icon">🛠️</span>
+      <div class="tier-name">Retainer</div>
+      <div class="tier-type">Ongoing Security Partner</div>
+      <ul class="tier-features">
+        <li>Continuous bug bounty coverage</li>
+        <li>Monthly security check-ins</li>
+        <li>On-demand recon & scanning</li>
+        <li>New feature security review</li>
+        <li>Unlimited re-tests</li>
+        <li>Priority response SLA</li>
+        <li>Custom tooling for your stack</li>
+        <li>Quarterly full pentest</li>
+      </ul>
+      <a href="mailto:baraiprince.cs@gmail.com?subject=Retainer Engagement" class="tier-cta">Discuss Retainer</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FINAL CTA
+═══════════════════════════════════════════ -->
+<div class="sec-divider"></div>
+<section class="sec" id="contact">
+  <div class="final-cta reveal">
+    <h2 class="final-h2">Ready to <span>Break</span> Things?</h2>
+    <p class="final-sub">// let's find your vulnerabilities before someone else does</p>
+    <div class="final-links">
+
+      <a href="mailto:baraiprince.cs@gmail.com?subject=Security Engagement Inquiry" class="f-link primary">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Email Me Now
+      </a>
+
+      <a href="https://github.com/1cYinfinity" target="_blank" class="f-link gh">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+
+      <a href="https://www.linkedin.com/in/prince-barai-2249aa265/" target="_blank" class="f-link li">
+        <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.76 1.38-1.56 2.84-1.56 3.04 0 3.6 2 3.6 4.59v5.61z"/></svg>
+        LinkedIn
+      </a>
+
+      <a href="https://x.com/PrinceBarai24" target="_blank" class="f-link">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.74-8.865L1.254 2.25H8.08l4.254 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+        @PrinceBarai24
+      </a>
+
+      <a href="tel:+91702146xxxx" class="f-link">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.25 1.01l-2.2 2.2z"/></svg>
+        +91 70214 6xxxx
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-left">
+    <strong>Prince Barai</strong> · <span class="ft-al">1nf1n1ty</span> · Security Researcher · Vadodara, India
+  </div>
+  <div class="ft-right">Pentest · VAPT · Bug Bounty · CTF · Recon · Training</div>
+</footer>
+
+<script>
+// ── BG CANVAS (same as portfolio) ──
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', () => { resize(); buildHex(); });
+  const hexes = [];
+  function buildHex() {
+    hexes.length = 0;
+    const cols = Math.ceil(W/52)+1, rows = Math.ceil(H/60)+1;
+    for (let r=0; r<rows; r++)
+      for (let c=0; c<cols; c++)
+        hexes.push({ x:c*52+(r%2)*26, y:r*30, base:0.04+Math.random()*0.07, phase:Math.random()*Math.PI*2, speed:0.003+Math.random()*0.005 });
+  }
+  buildHex();
+  function infPoint(t,cx,cy,a,b) { const s=1/(1+Math.sin(t)*Math.sin(t)); return {x:cx+a*Math.cos(t)*s, y:cy+b*Math.sin(t)*Math.cos(t)*s}; }
+  const PARTS = window.innerWidth<600?22:50;
+  const parts = Array.from({length:PARTS},(_,i)=>({ t:(i/PARTS)*Math.PI*2, speed:0.004+Math.random()*0.003, size:0.8+Math.random()*1.4, trail:[], color:Math.random()>0.5?'#0af5b8':'#ff2d55' }));
+  let frame=0;
+  function draw() {
+    ctx.clearRect(0,0,W,H); frame++;
+    hexes.forEach(h => {
+      ctx.globalAlpha = Math.max(0, h.base+Math.sin(frame*h.speed+h.phase)*0.04);
+      ctx.fillStyle='#0af5b8'; ctx.beginPath(); ctx.arc(h.x,h.y,1,0,Math.PI*2); ctx.fill();
+    });
+    const cx=W/2, cy=H*0.38, a=Math.min(W*0.2,220), b=Math.min(H*0.1,85);
+    parts.forEach(p => {
+      p.t+=p.speed;
+      const pos=infPoint(p.t,cx,cy,a,b);
+      p.trail.unshift({...pos}); if(p.trail.length>12) p.trail.pop();
+      p.trail.forEach((pt,i) => {
+        ctx.globalAlpha = Math.max(0,0.4*(1-i/p.trail.length));
+        ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(pt.x,pt.y,p.size*(1-i/p.trail.length*0.5),0,Math.PI*2); ctx.fill();
+      });
+    });
+    ctx.globalAlpha=1; requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── SCROLL REVEAL ──
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ── SKILL BAR ANIMATION ──
+const skillObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.skill-bar').forEach((bar, i) => {
+        setTimeout(() => bar.classList.add('animating'), i * 80);
+      });
+      skillObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+const skillsWrap = document.getElementById('skillsWrap');
+if (skillsWrap) skillObs.observe(skillsWrap);
+
+// ── MOBILE NAV ──
+const toggle = document.getElementById('navToggle');
+const mob    = document.getElementById('mobNav');
+toggle.addEventListener('click', () => {
+  toggle.classList.toggle('open');
+  mob.classList.toggle('open');
+  document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : '';
+});
+function closeMob() {
+  toggle.classList.remove('open'); mob.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+  });
+});
+</script>
+</body>
+</html>
